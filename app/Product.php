@@ -10,10 +10,8 @@ use Illuminate\Http\Request;
 class Product extends Model
 {
 
-    public function scopeFilter(Builder $builder, Request $request)
+    public function scopeFilter(Builder $builder, ProductFilters $filters)
     {
-        $filters = new ProductFilters($request);
-
         $filters->apply($builder);
     }
 }
