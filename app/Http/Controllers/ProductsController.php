@@ -10,8 +10,7 @@ class ProductsController extends Controller
     public function index(Request $request)
     {
         $products = Product::query()
-            ->search($request->search)
-            ->sort($request->sort, $request->dir)
+            ->filter($request)
             ->get();
 
         return response()->json($products);
