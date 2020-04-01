@@ -11,6 +11,8 @@ class ProductFilters
 {
     private Request $request;
 
+    protected array $filters = ['search', 'sort'];
+
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -18,21 +20,27 @@ class ProductFilters
 
     public function apply(Builder $builder)
     {
-        $this->search($builder, $this->request->search);
-        $this->sort($builder, $this->request->sort, $this->request->dir);
+        $this->builder = $builder;
+
+        foreach ($this->getFilters() as $field => $value) {
+            if (method_exists($this, $field)) {
+                $this->{$field}($value);
+            }
+        }
     }
 
-    public function search(Builder $query, ?string $search)
+    public function search(string $search)
     {
-        $query->when($search, function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%");
-        });
+        $this->builder->where('name', 'like', "%{$search}%");
     }
 
-    public function sort(Builder $query, ?string $sort, ?string $dir)
+    public function sort(string $sort)
     {
-        $query->when($sort, function ($q) use ($sort, $dir) {
-            $q->orderBy($sort, $dir === 'desc' ? 'desc' : 'asc');
-        });
+        $this->builder->orderBy($sort, $this->request->dir === 'desc' ? 'desc' : 'asc');
+    }
+
+    private function getFilters()
+    {
+        return array_filter($this->request->only($this->filters));
     }
 }
