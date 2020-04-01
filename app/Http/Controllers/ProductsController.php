@@ -7,8 +7,17 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Product::all());
+        $products = Product::query()
+            ->when($request->search, function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->search}%");
+            })
+            ->when($request->sort, function ($q) use ($request) {
+                $q->orderBy($request->sort, $request->dir === 'desc' ? 'desc' : 'asc');
+            })
+            ->get();
+
+        return response()->json($products);
     }
 }

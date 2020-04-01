@@ -34,4 +34,21 @@ class FiltersTest extends TestCase
         $this->getJson('/products')
             ->assertJsonCount(4);
     }
+
+    /** @test */
+    public function it_can_filter_products_by_free_text()
+    {
+        $this->getJson('/products?search=pizza')
+            ->assertJsonCount(1)
+            ->assertJsonFragment(['name' => 'Pizza']);
+    }
+
+    /** @test */
+    public function it_can_sort_products_by_price()
+    {
+        $response = $this->getJson('/products?sort=price&dir=asc')
+            ->json();
+
+        $this->assertEquals($response[0]['name'], 'Pizza');
+    }
 }
