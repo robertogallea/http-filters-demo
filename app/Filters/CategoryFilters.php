@@ -4,9 +4,6 @@
 namespace App\Filters;
 
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
-
 class CategoryFilters extends AbstractFilters
 {
 

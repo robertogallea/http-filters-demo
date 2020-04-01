@@ -53,6 +53,17 @@ class FiltersTest extends TestCase
     }
 
     /** @test */
+    public function it_can_sort_products_by_category_name()
+    {
+        Category::find($this->pizza->category_id)->update(['name' => '0000']);
+
+        $response = $this->getJson('/products?sort=category&dir=asc')
+            ->json();
+
+        $this->assertEquals($response[0]['name'], 'Pizza');
+    }
+
+    /** @test */
     public function it_can_filter_pcategories_by_free_text()
     {
         $this->getJson('/categories?search=food')
