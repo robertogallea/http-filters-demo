@@ -10,3 +10,4 @@
 - git checkout 07-filters-for-categories
 - git checkout 08-refactor-filters
 - git checkout 09-refactor-models-with-trait
+- git checkout 10-add-sorting-by-category-name
