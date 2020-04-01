@@ -8,10 +8,9 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
-    public function index(Request $request, ProductFilters $productFilters)
+    public function index(ProductFilters $productFilters)
     {
-        $products = Product::query()
-            ->filter($productFilters)
+        $products = Product::filter($productFilters)
             ->get();
 
         return response()->json($products);

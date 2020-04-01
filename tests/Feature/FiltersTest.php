@@ -51,4 +51,12 @@ class FiltersTest extends TestCase
 
         $this->assertEquals($response[0]['name'], 'Pizza');
     }
+
+    /** @test */
+    public function it_can_filter_pcategories_by_free_text()
+    {
+        $this->getJson('/categories?search=food')
+            ->assertJsonCount(1)
+            ->assertJsonFragment(['name' => 'Food']);
+    }
 }
